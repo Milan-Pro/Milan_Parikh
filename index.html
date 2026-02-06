@@ -587,6 +587,12 @@
                     <span class="count">10 Engagements</span>
                 </div>
 
+                <div class="nav-card" onclick="showPage('citations')">
+                    <h3>Citations & Impact</h3>
+                    <p>Scholarly influence and recognition</p>
+                    <span class="count">Research Metrics</span>
+                </div>
+
                 <div class="nav-card" onclick="showPage('memberships')">
                     <h3>Professional Memberships</h3>
                     <p>Leadership in key organizations</p>
@@ -905,6 +911,124 @@
             </div>
         </div>
 
+        <div id="citations" class="page">
+            <div class="section">
+                <button class="back-button" onclick="showPage('home')">← Back to Home</button>
+                <h2>Citations & Impact</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="number">15</div>
+                        <div class="label">Total Citations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">2</div>
+                        <div class="label">H-Index</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">1</div>
+                        <div class="label">i10-Index</div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-primary); margin-bottom: 24px; font-size: 1.8em;">Research Impact</h3>
+                
+                <div class="award-cards">
+                    <div class="award-card">
+                        <h4>Google Scholar Profile</h4>
+                        <p>Comprehensive citation metrics and publication record</p>
+                        <a href="https://scholar.google.com/citations?user=IKrH0tgAAAAJ" target="_blank" class="view-link">View Profile →</a>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Web of Science</h4>
+                        <p>ResearcherID: NHP-2260-2025</p>
+                        <a href="https://www.webofscience.com/wos/author/record/NHP-2260-2025" target="_blank" class="view-link">View Profile →</a>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>ORCID</h4>
+                        <p>Persistent digital identifier: 0009-0009-8613-7158</p>
+                        <a href="https://orcid.org/0009-0009-8613-7158" target="_blank" class="view-link">View Profile →</a>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-primary); margin-bottom: 24px; margin-top: 40px; font-size: 1.8em;">Most Influential Publications</h3>
+                
+                <div class="award-cards">
+                    <div class="award-card">
+                        <h4>Microsoft Power Platform</h4>
+                        <p>BI Power, P Apps, P Automate • 2020</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">13 Citations</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Secure and Scalable Data Sharing in IoT Environments with Blockchain Integration</h4>
+                        <p>TechRxiv Preprint • Computing and Processing</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">119 Views • 15 Downloads</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Hybrid Edge Cloud Predictive Framework for Smart Home Energy Management</h4>
+                        <p>IEEE Transactions on Consumer Electronics • 2025</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">Published</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Edge Vs Cloud Computing Performance Trade-Offs for Real-Time Analytics</h4>
+                        <p>AA Soni, RNK Dhenia, M Parikh</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">2 Citations</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Big Data Workload Profiling for Energy-Aware Cloud Resource Management</h4>
+                        <p>arXiv preprint • 2026</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">Preprint</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Reinforcement Learning for Dynamic Workflow Optimization in CI/CD Pipelines</h4>
+                        <p>arXiv preprint • 2026</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--accent-number); font-weight: bold;">Preprint</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-primary); margin-bottom: 24px; margin-top: 40px; font-size: 1.8em;">Industry Impact & Recognition</h3>
+                
+                <div class="award-cards">
+                    <div class="award-card">
+                        <h4>Microsoft Fabric Implementation Framework</h4>
+                        <p>Enterprise data platform architecture adopted by multiple organizations</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Data Governance Best Practices</h4>
+                        <p>Frameworks and methodologies referenced in industry implementations</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>AI-Driven Analytics Solutions</h4>
+                        <p>Low-code platform integration strategies adopted across enterprises</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Power BI Semantic Modeling</h4>
+                        <p>Advanced modeling techniques shared through community and adopted by practitioners</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Enterprise Data Migration Patterns</h4>
+                        <p>Methodologies for large-scale data platform modernization</p>
+                    </div>
+
+                    <div class="award-card">
+                        <h4>Cost Optimization Frameworks</h4>
+                        <p>Proven approaches for maximizing ROI in enterprise analytics platforms</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="experience" class="page">
             <div class="section">
                 <button class="back-button" onclick="showPage('home')">← Back to Home</button>
@@ -1035,8 +1159,9 @@
                     </div>
                     <div class="award-card">
                         <h4>Fellow BCS</h4>
-                        <p>Branch Secretary, Accessor, Enterprise Architect Group Committee</p>
-                        <p style="margin-top: 12px; font-style: normal; color: var(--text-secondary);">British Computer Society - The Chartered Institute for IT</p>
+                        <p>Branch Secretary - BCS South Wales Branch</p>
+                        <p>Committee Secretary - Enterprise Architecture Specialist Group</p>
+                        <p style="margin-top: 12px; font-style: normal; color: var(--text-secondary);">British Computer Society - The Chartered Institute for IT, the leading body for computing professionals in the UK</p>
                     </div>
                 </div>
             </div>
