@@ -4,99 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milan Parikh - Professional Portfolio</title>
-    
-    <!-- Schema.org structured data for search engines -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Milan Parikh",
-      "jobTitle": "Lead Enterprise Data Architect",
-      "description": "IEEE Senior Member, IETE Fellow, and BCS Branch Secretary specializing in enterprise architecture, data modernization, and Microsoft Power Platform",
-      "url": "https://milan-parikh.com",
-      "image": "https://milan-parikh.com/profile-photo.jpg",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Cytel Inc.",
-        "url": "https://www.cytel.com"
-      },
-      "alumniOf": [
-        {
-          "@type": "Organization",
-          "name": "Your University Name"
-        }
-      ],
-      "memberOf": [
-        {
-          "@type": "Organization",
-          "name": "IEEE",
-          "url": "https://www.ieee.org",
-          "description": "Senior Member"
-        },
-        {
-          "@type": "Organization",
-          "name": "Institution of Electronics and Telecommunication Engineers",
-          "alternateName": "IETE",
-          "url": "https://www.iete.org",
-          "description": "Fellow"
-        },
-        {
-          "@type": "Organization",
-          "name": "British Computer Society",
-          "alternateName": "BCS",
-          "url": "https://www.bcs.org",
-          "description": "Branch Secretary"
-        }
-      ],
-      "knowsAbout": [
-        "Enterprise Architecture",
-        "Data Modernization",
-        "Microsoft Power Platform",
-        "Azure AI Services",
-        "Low-Code Development",
-        "Machine Learning",
-        "Cloud Computing",
-        "Enterprise Data Architecture"
-      ],
-      "sameAs": [
-        "https://linkedin.com/in/yourprofile",
-        "https://github.com/parikhMilan",
-        "https://scholar.google.com/citations?user=YOUR_ID",
-        "https://orcid.org/YOUR-ORCID-ID",
-        "https://www.researchgate.net/profile/YOUR_PROFILE",
-        "https://ieeexplore.ieee.org/author/YOUR_ID",
-        "https://www.webofscience.com/wos/author/rid/NHP-2260-2025"
-      ],
-      "award": [
-        "Microsoft Power Platform Super User",
-        "IEEE Senior Member",
-        "IETE Fellow",
-        "IEEE Day 2025 Ambassador"
-      ],
-      "hasOccupation": {
-        "@type": "Occupation",
-        "name": "Lead Enterprise Data Architect",
-        "occupationalCategory": "15-1299.09",
-        "responsibilities": "Enterprise architecture, data modernization, Microsoft Power Platform implementation, mentoring 3,500+ professionals"
-      }
-    }
-    </script>
-    
-    <!-- Open Graph meta tags for social media -->
-    <meta property="og:title" content="Milan Parikh - Lead Enterprise Data Architect">
-    <meta property="og:description" content="IEEE Senior Member specializing in enterprise architecture and Microsoft Power Platform">
-    <meta property="og:url" content="https://milan-parikh.com">
-    <meta property="og:type" content="profile">
-    <meta property="og:image" content="https://milan-parikh.com/profile-photo.jpg">
-    
-    <!-- Twitter Card meta tags -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Milan Parikh - Lead Enterprise Data Architect">
-    <meta name="twitter:description" content="IEEE Senior Member specializing in enterprise architecture and Microsoft Power Platform">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" 
-         integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" 
-         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
             --bg-primary: #f8f9fa;
@@ -115,7 +23,146 @@
             --link-color: #e07a7a;
         }
 
-        [data-theme="dark"] {
+        /* ---- TIMELINE STYLES ---- */
+        .tl-filter {
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tl-filter:hover { background: var(--hover-bg); }
+        .tl-filter.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+        .tl-filter[data-cat="award"].active { background: #b45309; border-color: #b45309; }
+        .tl-filter[data-cat="cert"].active { background: #0d7a6a; border-color: #0d7a6a; }
+        .tl-filter[data-cat="publication"].active { background: #6d28d9; border-color: #6d28d9; }
+        .tl-filter[data-cat="community"].active { background: #9a3412; border-color: #9a3412; }
+        .tl-filter[data-cat="media"].active { background: var(--text-secondary); border-color: var(--text-secondary); }
+
+        .tl-year-group { margin-bottom: 8px; }
+        .tl-year-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .tl-year-label {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            min-width: 72px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .tl-year-header:hover .tl-year-label { color: var(--accent-primary); }
+        .tl-year-line { flex: 1; height: 1px; background: var(--border-color); }
+        .tl-year-count { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
+
+        .tl-events-list {
+            padding-left: 16px;
+            border-left: 2px solid var(--border-color);
+            margin-left: 36px;
+            margin-bottom: 28px;
+        }
+        .tl-event-item {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .tl-event-item.tl-hidden { display: none; }
+        .tl-dot {
+            position: absolute;
+            left: -25px;
+            top: 14px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-secondary);
+            transition: transform 0.2s;
+        }
+        .tl-event-item:hover .tl-dot { transform: scale(1.5); }
+        .tl-dot-career { background: #6b9fda; }
+        .tl-dot-award { background: #e8c97a; }
+        .tl-dot-cert { background: #4ab8a4; }
+        .tl-dot-publication { background: #c084fc; }
+        .tl-dot-community { background: #e08060; }
+        .tl-dot-media { background: #94a3b8; }
+
+        .tl-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .tl-card:hover {
+            box-shadow: 0 4px 16px var(--shadow);
+            transform: translateX(3px);
+        }
+        .tl-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 2px; }
+        .tl-body { flex: 1; }
+        .tl-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+        .tl-title { font-weight: 600; font-size: 0.92rem; color: var(--text-primary); line-height: 1.35; }
+        .tl-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .tl-tag-career { background: #dbeafe; color: #1d4ed8; }
+        .tl-tag-award { background: #fef9c3; color: #92400e; }
+        .tl-tag-cert { background: #d1fae5; color: #065f46; }
+        .tl-tag-publication { background: #ede9fe; color: #5b21b6; }
+        .tl-tag-community { background: #ffedd5; color: #9a3412; }
+        .tl-tag-media { background: #f1f5f9; color: #475569; }
+        .tl-desc { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; }
+        .tl-meta { margin-top: 5px; font-size: 0.76rem; color: var(--accent-secondary); font-weight: 500; }
+        .tl-impact {
+            display: inline-block;
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 7px;
+            margin-top: 5px;
+        }
+
+        .tl-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; }
+        .tl-bar-stack { width: 100%; display: flex; flex-direction: column; gap: 2px; border-radius: 4px 4px 0 0; overflow: hidden; cursor: pointer; transition: opacity 0.2s; }
+        .tl-bar-stack:hover { opacity: 0.8; }
+        .tl-bar-seg { width: 100%; }
+        .tl-bar-year { font-size: 0.68rem; color: var(--text-secondary); font-weight: 600; }
+
+        /* dark mode adjustments for timeline */
+        [data-theme="dark"] .tl-tag-career { background: #1e3a5f; color: #93c5fd; }
+        [data-theme="dark"] .tl-tag-award { background: #422006; color: #fcd34d; }
+        [data-theme="dark"] .tl-tag-cert { background: #064e3b; color: #6ee7b7; }
+        [data-theme="dark"] .tl-tag-publication { background: #3b0764; color: #d8b4fe; }
+        [data-theme="dark"] .tl-tag-community { background: #431407; color: #fdba74; }
+        [data-theme="dark"] .tl-tag-media { background: #1e293b; color: #94a3b8; }
+        [data-theme="dark"] .tl-impact { background: #052e16; border-color: #14532d; color: #86efac; }
+
+        [data-theme="dark"] {\n
             --bg-primary: #1a1f2e;
             --bg-secondary: #242938;
             --bg-card: #343b4f;
@@ -700,7 +747,7 @@
                 <div class="nav-card" onclick="showPage('peer-review')">
                     <h3>Peer Review Activities</h3>
                     <p>Global contributions across 8 countries</p>
-                    <span class="count">219 Reviews</span>
+                    <span class="count">203 Reviews</span>
                 </div>
 
                 <div class="nav-card" onclick="showPage('publications')">
@@ -720,6 +767,12 @@
                     <p>14+ years in enterprise architecture</p>
                     <span class="count">6 Roles</span>
                 </div>
+
+                <div class="nav-card" onclick="showPage('timeline')">
+                    <h3>Achievement Timeline</h3>
+                    <p>14 years of consistent professional growth</p>
+                    <span class="count">Interactive</span>
+                </div>
             </div>
         </div>
 
@@ -730,11 +783,11 @@
                 
                 <div class="stats">
                     <div class="stat-card">
-                        <div class="number">219</div>
+                        <div class="number">203</div>
                         <div class="label">Total Reviews</div>
                     </div>
                     <div class="stat-card">
-                        <div class="number">204</div>
+                        <div class="number">189</div>
                         <div class="label">Manuscripts</div>
                     </div>
                     <div class="stat-card">
@@ -752,16 +805,12 @@
                         <h4>International Conference on Computational Intelligence and Soft Computing</h4>
                     </div>
                     <div class="journal-card">
-                        <span class="count">22</span>
+                        <span class="count">18</span>
                         <h4>International Journal of Systems Assurance Engineering and Management</h4>
                     </div>
                     <div class="journal-card">
                         <span class="count">13</span>
                         <h4>International Conference on Computer and Applications</h4>
-                    </div>
-                    <div class="journal-card">
-                        <span class="count">12</span>
-                        <h4>International Conference on Artificial Intelligence, Computation, Communication and Network Security</h4>
                     </div>
                     <div class="journal-card">
                         <span class="count">10</span>
@@ -770,6 +819,10 @@
                     <div class="journal-card">
                         <span class="count">8</span>
                         <h4>IEEE Consumer Communications and Networking Conference</h4>
+                    </div>
+                    <div class="journal-card">
+                        <span class="count">8</span>
+                        <h4>International Conference on Artificial Intelligence, Computation, Communication and Network Security</h4>
                     </div>
                     <div class="journal-card">
                         <span class="count">7</span>
@@ -1080,8 +1133,8 @@
 
                     <div class="award-card">
                         <h4>ResearchGate Profile</h4>
-                        <p>Research Interest Score: 11.2 • 257 Reads • 7 Citations • 13 Recommendations</p>
-                        <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-secondary);">Higher than 28% of all ResearchGate members & 93% of members who first published in 2025</p>
+                        <p>Research Interest Score: 8.9 • 228 Reads • 7 Citations • 8 Recommendations</p>
+                        <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-secondary);">Higher than 25% of all ResearchGate members & 91% of members who first published in 2025</p>
                         <a href="https://www.researchgate.net/profile/Milan-Parikh-2" target="_blank" class="view-link">View Profile →</a>
                     </div>
 
@@ -1553,11 +1606,78 @@
                 </div>
             </div>
         </div>
+        <!-- TIMELINE PAGE -->
+        <div id="timeline" class="page">
+            <div class="section">
+                <button class="back-button" onclick="showPage('home')">← Back to Home</button>
+                <h2>Achievement Timeline</h2>
+                <p style="color:var(--text-secondary); margin-bottom:28px; font-size:0.95rem;">14 years of consistent professional achievement across career, awards, certifications, publications, community, and media.</p>
+
+                <!-- FILTER BAR -->
+                <div id="tl-filter-bar" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px;">
+                    <button class="tl-filter active" data-cat="all">All</button>
+                    <button class="tl-filter" data-cat="career">💼 Career</button>
+                    <button class="tl-filter" data-cat="award">🏆 Awards</button>
+                    <button class="tl-filter" data-cat="cert">✓ Certifications</button>
+                    <button class="tl-filter" data-cat="publication">📄 Publications</button>
+                    <button class="tl-filter" data-cat="community">🌐 Community</button>
+                    <button class="tl-filter" data-cat="media">📰 Media</button>
+                </div>
+
+                <!-- STATS ROW -->
+                <div class="stats" style="margin-bottom:28px;">
+                    <div class="stat-card"><div class="stat-number">14+</div><div class="stat-label">Years Active</div></div>
+                    <div class="stat-card"><div class="stat-number">203</div><div class="stat-label">Peer Reviews</div></div>
+                    <div class="stat-card"><div class="stat-number">9+</div><div class="stat-label">Awards</div></div>
+                    <div class="stat-card"><div class="stat-number">9</div><div class="stat-label">Publications</div></div>
+                </div>
+
+                <!-- ACTIVITY CHART -->
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:24px; margin-bottom:28px;">
+                    <h3 style="margin-bottom:6px; color:var(--text-primary); font-size:1.1rem;">Achievement Activity by Year</h3>
+                    <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:20px;">Each bar shows total documented achievements per year. Consistent activity across all 14 years confirms sustained professional engagement.</p>
+                    <div id="tl-chart" style="display:flex; align-items:flex-end; gap:6px; height:120px;"></div>
+                    <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:16px;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#6b9fda;"></div>Career</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#4ab8a4;"></div>Certifications</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#e8c97a;"></div>Awards</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#c084fc;"></div>Publications</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#e08060;"></div>Community</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-secondary);"><div style="width:10px;height:10px;border-radius:2px;background:#94a3b8;"></div>Media</div>
+                    </div>
+                </div>
+
+                <!-- PROGRESSION PHASES -->
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:24px; margin-bottom:32px;">
+                    <h3 style="margin-bottom:20px; color:var(--text-primary); font-size:1.1rem;">Career Progression: Contributor → Global Authority</h3>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);min-width:100px;">2011–2014</div>
+                            <div style="flex:1;height:26px;background:var(--bg-primary);border-radius:4px;overflow:hidden;"><div style="width:22%;height:100%;background:#6b8cae;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:0.72rem;font-weight:600;color:white;">Foundational</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);min-width:100px;">2015–2020</div>
+                            <div style="flex:1;height:26px;background:var(--bg-primary);border-radius:4px;overflow:hidden;"><div style="width:50%;height:100%;background:#4ab8a4;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:0.72rem;font-weight:600;color:white;">Enterprise Builder</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);min-width:100px;">2021–2023</div>
+                            <div style="flex:1;height:26px;background:var(--bg-primary);border-radius:4px;overflow:hidden;"><div style="width:72%;height:100%;background:#8b5cf6;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:0.72rem;font-weight:600;color:white;">Solutions Leader</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);min-width:100px;">2024–2026</div>
+                            <div style="flex:1;height:26px;background:var(--bg-primary);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:linear-gradient(90deg,#c4973a,#b54f2a);border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:0.72rem;font-weight:600;color:white;">International Authority</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE EVENTS -->
+                <div id="tl-events"></div>
+            </div>
+        </div>
+
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
-         integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g=="
-         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let map = null;
 
@@ -1662,7 +1782,178 @@
             setupSearch('mediaSearch', 'mediaList');
             setupSearch('judgingSearch', 'judgingList');
             setupSearch('publicationsSearch', 'publicationsList');
+
+            initTimeline();
         });
+
+        // ==================== TIMELINE ====================
+        const TL_EVENTS = [
+          { year: 2026, month: "Feb", cat: "community", icon: "🎤", title: "Keynote Speaker & Distinguished Invited Speaker – IEEE ICRTCST-2026", desc: "International keynote at IEEE conference; dual recognition for distinguished contribution to research and technology", meta: "IEEE ICRTCST · International" },
+          { year: 2026, month: "Jan", cat: "media", icon: "📰", title: "Featured Interview – Times of India (Print)", desc: "Technology leadership interview published in Times of India print edition, page 25", meta: "Times of India · January 2026" },
+          { year: 2026, month: "Jan", cat: "community", icon: "⚖️", title: "CES Innovation Awards 2026 – Judge", desc: "Selected by Consumer Technology Association to judge the most prestigious consumer technology awards globally", meta: "Consumer Technology Association · Las Vegas" },
+          { year: 2026, month: "Jan", cat: "publication", icon: "📄", title: "Adaptive Resource Management – IEEE PUNECON 2026", desc: "Published research on cloud-native database optimization via adaptive resource management", meta: "IEEE Xplore · doi:10.1109/11336962" },
+          { year: 2026, month: "Jan", cat: "community", icon: "🏆", title: "Conrad Challenge Judge", desc: "Innovation Stage Judge at Space Center Houston, coaching next-generation innovators", meta: "Space Center Houston · 2025–2026" },
+          { year: 2025, month: "Dec", cat: "award", icon: "🏆", title: "Excellence in Data Modernization – Economic Times", desc: "Awarded by Economic Times for advancing data modernization and analytics capabilities at enterprise level", meta: "Economic Times · December 2025", impact: "National media recognition" },
+          { year: 2025, month: "Dec", cat: "media", icon: "📰", title: "ANI/ET Young Industry Leaders Feature", desc: "ET Young Industry Leaders 2025 recognition covered by Asia News International", meta: "ANI · December 2025" },
+          { year: 2025, month: "Nov", cat: "media", icon: "📝", title: "India Today – Business Intelligence & AI Article", desc: "Byline article: Business Intelligence Drives AI Success: Clean Data, Structured Frameworks", meta: "India Today · November 2025" },
+          { year: 2025, month: "Oct", cat: "community", icon: "⚖️", title: "IEEE Computer Society Awards – Judge", desc: "Reviewer and judge for IEEE Computer Society Awards evaluation cycle", meta: "IEEE · October 2025" },
+          { year: 2025, month: "Aug", cat: "publication", icon: "📄", title: "Hybrid Edge-Cloud Predictive Framework – IEEE Published", desc: "Peer-reviewed IEEE publication on smart home energy management using hybrid edge-cloud architecture", meta: "IEEE Xplore · doi:10.1109/11300847" },
+          { year: 2025, month: "Jul", cat: "award", icon: "🏆", title: "Data Science and Analytics Champion – ISRLA 2025", desc: "International award for excellence in data science and analytics innovation at global conference", meta: "ISRLA · International", impact: "International recognition" },
+          { year: 2025, month: "Jul", cat: "award", icon: "🏆", title: "Best IT Infrastructure Architect – ISRLA 2025", desc: "Awarded for exceptional IT infrastructure design and implementation at international level", meta: "ISRLA · International", impact: "International recognition" },
+          { year: 2025, month: "Jun", cat: "community", icon: "⚖️", title: "LIVE AI Lone Star Hackathon – Judge", desc: "Judge for premier Texas hackathon sponsored by Google, Amazon, and AT&T. Rice, SMU, and UT Austin partnership event", meta: "Rice / SMU / UT Austin · June 2025" },
+          { year: 2025, month: "May", cat: "community", icon: "🪑", title: "Session Chair – AIC 2025 (IEEE World Conference)", desc: "Appointed Session Chair for Intelligent Systems track at IEEE World Conference on AI", meta: "IEEE · 2025" },
+          { year: 2025, month: "Apr", cat: "award", icon: "🏆", title: "AI and Robotics Excellence Award", desc: "Recognized for outstanding contributions to AI and robotics systems development by AiRobotics Hub", meta: "AI Robotics Hub · International" },
+          { year: 2025, month: "Apr", cat: "publication", icon: "📄", title: "Generative AI for ETL Automation – CICT Conference", desc: "Research on using generative AI to automate data flow management and ETL pipeline design", meta: "IIT Dharwad (CICT) · India" },
+          { year: 2025, month: "Mar", cat: "publication", icon: "📄", title: "Deep Learning for Defect Detection – ICAIN", desc: "Automated defect detection in industrial manufacturing using deep learning; published on IEEE Xplore", meta: "IEEE Xplore · doi:10.1109/11212369" },
+          { year: 2025, month: "Mar", cat: "media", icon: "📝", title: "DNA India – AI Has Become the New Normal", desc: "Byline article: Information is the Currency That Drives Everything; published in national tech press", meta: "DNA India · 2025" },
+          { year: 2025, month: "Feb", cat: "community", icon: "👥", title: "IEEE Senior Member Panelist", desc: "Selected as panel member evaluating Senior Member applications for IEEE, the world's largest technical organization", meta: "IEEE · 2025" },
+          { year: 2025, month: "Jan", cat: "award", icon: "🏆", title: "Fortress Cybersecurity Award", desc: "Named among 2025 Fortress Cybersecurity Award recipients for security architecture excellence", meta: "Fortress Cybersecurity · 2025" },
+          { year: 2025, month: "Jan", cat: "media", icon: "📝", title: "Techbullion – AI, Cloud & Digital Transformation", desc: "Byline: Navigating the Intersection of AI, Cloud Applications, Digital Transformation and Governance", meta: "Techbullion · USA · 2025" },
+          { year: 2024, month: "Dec", cat: "publication", icon: "📄", title: "Explainable AI for Autonomous Systems – ICCCE", desc: "Research paper: A Framework for Trustworthy Decision-Making in autonomous AI systems", meta: "ICCCE · IIUM Malaysia · 2024" },
+          { year: 2024, month: "Dec", cat: "publication", icon: "📄", title: "Resilient Autonomy – ICCCE", desc: "Securing intelligent systems against adversarial attacks; presented at international IEEE-linked conference", meta: "ICCCE · IIUM Malaysia · 2024" },
+          { year: 2024, month: "Dec", cat: "publication", icon: "📄", title: "Secure Data Sharing in IoT – ICCCE", desc: "Blockchain integration for secure data sharing in IoT environments", meta: "ICCCE · IIUM Malaysia · 2024" },
+          { year: 2024, month: "Nov", cat: "community", icon: "👥", title: "Fellow – British Computer Society (FBCS)", desc: "Elected Fellow of the Chartered Institute for IT, the leading body for computing professionals in the UK", meta: "BCS · United Kingdom", impact: "International fellowship" },
+          { year: 2024, month: "Oct", cat: "community", icon: "👥", title: "Fellow – IETE India", desc: "Elected Fellow of Institution of Electronics and Telecommunication Engineers, India's leading professional society", meta: "IETE · India" },
+          { year: 2024, month: "Sep", cat: "community", icon: "🌐", title: "Peer Review: 203 Reviews across 30+ Conferences", desc: "Ongoing peer review work across 30+ conferences in 8 countries, spanning Malaysia, USA, India, UAE, and more", meta: "Multiple International Conferences · 8 Countries", impact: "203 total reviews" },
+          { year: 2024, month: "Aug", cat: "community", icon: "👥", title: "Distinguished Fellow – SCRS", desc: "Distinguished Fellow designation from Society for Cybernetics and Research Systems", meta: "SCRS · International" },
+          { year: 2024, month: "May", cat: "career", icon: "💼", title: "Lead Enterprise Data Architect – Cytel Inc.", desc: "Architected Microsoft Fabric enterprise data platform for 1,500-employee global org. Increased data availability 80%. Delivered $100K–$250K annual cost savings.", meta: "Cytel · Richmond, TX · May 2024 – Present", impact: "$100K–$250K annual savings" },
+          { year: 2024, month: "Mar", cat: "media", icon: "📝", title: "India.com – Digital Transformation in the AI Era", desc: "Byline article: Lessons from the Front Lines of digital transformation; published in major Indian national outlet", meta: "India.com · 2024" },
+          { year: 2024, month: "Jan", cat: "publication", icon: "📄", title: "Reinforcement Learning for CI/CD – CICN", desc: "Research on dynamic workflow optimization in CI/CD pipelines using reinforcement learning", meta: "CICN Conference · India · 2024" },
+          { year: 2023, month: "Nov", cat: "career", icon: "💼", title: "Technical Solution Architect – MCA Connect", desc: "Delivered Dynamics 365 and Azure integration platform. Reduced integration failure rate 80%. Shortened financial reconciliation from 5 days to 1 day.", meta: "MCA Connect · Richmond, TX · Nov 2023–May 2024", impact: "$75K–$250K savings per client" },
+          { year: 2023, month: "Jun", cat: "community", icon: "👥", title: "Senior Member – IEEE", desc: "Elevated to Senior Member of IEEE, the world's largest technical professional organization. Fewer than 10% of IEEE members hold this grade.", meta: "IEEE · 2023", impact: "Top 10% of IEEE members" },
+          { year: 2022, month: "Oct", cat: "career", icon: "💼", title: "Senior Software Consultant – Hitachi Solutions America", desc: "Led Dynamics 365 Sales implementations. Boosted lead conversion 35%, forecasting accuracy 45%, saved 30 hr/month per user.", meta: "Hitachi Solutions America · Houston, TX · Oct 2022–Nov 2023", impact: "$100K–$300K annual savings" },
+          { year: 2022, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Power Platform Architect Certification", desc: "Achieved the highest-level Microsoft Power Platform certification: Solution Architect (PL-600)", meta: "Microsoft · 2022" },
+          { year: 2021, month: "Jul", cat: "career", icon: "💼", title: "Senior Software Consultant – Avanade", desc: "Led Power Platform COE implementation. Reduced shadow IT 40%, increased solution reuse 50%, cut deployment errors 70%.", meta: "Avanade · Houston, TX · Jul 2021–Oct 2022" },
+          { year: 2021, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Power Platform Developer Certification", desc: "Certified as Microsoft Power Platform Developer", meta: "Microsoft · 2021" },
+          { year: 2020, month: "Nov", cat: "career", icon: "💼", title: "Senior Software Developer – Ford Motor Credit", desc: "Modernized legacy CRM at Ford Credit. Improved operational efficiency 60%. Enabled field agent mobility.", meta: "Ford Motor Credit Company · Dearborn, MI · Nov 2020–Jul 2021" },
+          { year: 2020, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Power Platform Fundamentals Certification", desc: "First Power Platform certification, beginning a multi-year certification progression", meta: "Microsoft · 2020" },
+          { year: 2019, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Azure Fundamentals Certification", desc: "Azure cloud certification marking the start of cloud-first architecture competence", meta: "Microsoft · 2019" },
+          { year: 2017, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Certified Solution Developer (MCSD)", desc: "MCSD: Web Applications certification; validates advanced solution development across the Microsoft stack", meta: "Microsoft · 2017" },
+          { year: 2015, month: "Jan", cat: "career", icon: "💼", title: "Senior Software Developer – Dart Container Corporation", desc: "Led digital modernization over 6 years. Built 25+ low-code apps. Saved 1000+ hours/year. Reduced ticket resolution 60%. Portal adoption up 300% in 6 months.", meta: "Dart Container · Mason, MI · Jan 2015–Nov 2020", impact: "1000+ hrs/year saved" },
+          { year: 2015, month: "Jan", cat: "cert", icon: "✓", title: "Microsoft Certified Solution Associate (MCSA)", desc: "MCSA certification establishing core Microsoft platform competence", meta: "Microsoft · 2015" },
+          { year: 2014, month: "Sep", cat: "career", icon: "🎓", title: "M.S. Electrical & Computer Engineering – San Francisco Bay University", desc: "Graduate degree with focus on data systems and applied computing", meta: "San Francisco Bay University · Fremont, CA · 2013–2014" },
+          { year: 2014, month: "Jan", cat: "cert", icon: "✓", title: "Oracle Certified Java Developer", desc: "Oracle Certified Professional, Java SE 6 Programmer", meta: "Oracle · 2014" },
+          { year: 2013, month: "Jan", cat: "career", icon: "💼", title: "Software Developer – KnackTek", desc: "First US role; built SharePoint 2013 environments, custom components, and workflow automation for enterprise clients", meta: "KnackTek · Greater Atlanta Area · Jan 2013–Jan 2015" },
+          { year: 2011, month: "Aug", cat: "career", icon: "🎓", title: "B.S. Electrical Engineering – SSIT Bharuch, India", desc: "Bachelor's degree in Electrical and Electronics Engineering; foundation for systems and technical thinking", meta: "SSIT · Gujarat, India · 2006–2011" },
+        ];
+
+        let tlCurrentFilter = 'all';
+
+        function initTimeline() {
+            renderTLChart();
+            renderTLEvents();
+
+            document.querySelectorAll('.tl-filter').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tl-filter').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    tlCurrentFilter = btn.dataset.cat;
+                    renderTLEvents();
+                });
+            });
+        }
+
+        function renderTLEvents() {
+            const grouped = {};
+            TL_EVENTS.forEach(e => {
+                if (!grouped[e.year]) grouped[e.year] = [];
+                grouped[e.year].push(e);
+            });
+            const years = Object.keys(grouped).map(Number).sort((a,b) => b - a);
+            const container = document.getElementById('tl-events');
+            container.innerHTML = '';
+
+            years.forEach(year => {
+                const events = grouped[year];
+                const visible = tlCurrentFilter === 'all' ? events : events.filter(e => e.cat === tlCurrentFilter);
+                if (visible.length === 0) return;
+
+                const group = document.createElement('div');
+                group.className = 'tl-year-group';
+
+                const header = document.createElement('div');
+                header.className = 'tl-year-header';
+                header.innerHTML = `<div class="tl-year-label">${year}</div><div class="tl-year-line"></div><div class="tl-year-count">${visible.length} achievement${visible.length !== 1 ? 's' : ''}</div>`;
+
+                const list = document.createElement('div');
+                list.className = 'tl-events-list';
+
+                events.forEach(ev => {
+                    const item = document.createElement('div');
+                    item.className = 'tl-event-item' + (tlCurrentFilter !== 'all' && ev.cat !== tlCurrentFilter ? ' tl-hidden' : '');
+                    item.innerHTML = `
+                        <div class="tl-dot tl-dot-${ev.cat}"></div>
+                        <div class="tl-card">
+                            <div class="tl-icon">${ev.icon}</div>
+                            <div class="tl-body">
+                                <div class="tl-top">
+                                    <div class="tl-title">${ev.title}</div>
+                                    <div class="tl-tag tl-tag-${ev.cat}">${ev.cat.charAt(0).toUpperCase()+ev.cat.slice(1)}</div>
+                                </div>
+                                <div class="tl-desc">${ev.desc}</div>
+                                <div class="tl-meta">${ev.month} ${ev.year} · ${ev.meta}</div>
+                                ${ev.impact ? `<div class="tl-impact">↑ ${ev.impact}</div>` : ''}
+                            </div>
+                        </div>`;
+                    list.appendChild(item);
+                });
+
+                group.appendChild(header);
+                group.appendChild(list);
+                container.appendChild(group);
+            });
+        }
+
+        function renderTLChart() {
+            const yearMap = {};
+            TL_EVENTS.forEach(e => {
+                if (!yearMap[e.year]) yearMap[e.year] = { career:0, cert:0, award:0, publication:0, community:0, media:0, total:0 };
+                yearMap[e.year][e.cat]++;
+                yearMap[e.year].total++;
+            });
+            const years = Object.keys(yearMap).map(Number).sort((a,b) => a - b);
+            const maxTotal = Math.max(...years.map(y => yearMap[y].total));
+            const cats = [
+                { key:'career', color:'#6b9fda' },
+                { key:'cert', color:'#4ab8a4' },
+                { key:'award', color:'#e8c97a' },
+                { key:'publication', color:'#c084fc' },
+                { key:'community', color:'#e08060' },
+                { key:'media', color:'#94a3b8' },
+            ];
+            const CHART_H = 100;
+            const container = document.getElementById('tl-chart');
+            container.innerHTML = '';
+
+            years.forEach(y => {
+                const col = document.createElement('div');
+                col.className = 'tl-bar-col';
+
+                const stack = document.createElement('div');
+                stack.className = 'tl-bar-stack';
+                const totalH = Math.max(4, Math.round((yearMap[y].total / maxTotal) * CHART_H));
+                stack.style.height = totalH + 'px';
+
+                cats.forEach(c => {
+                    if (yearMap[y][c.key] > 0) {
+                        const seg = document.createElement('div');
+                        seg.className = 'tl-bar-seg';
+                        seg.style.background = c.color;
+                        seg.style.height = Math.max(3, Math.round((yearMap[y][c.key] / maxTotal) * CHART_H)) + 'px';
+                        stack.appendChild(seg);
+                    }
+                });
+
+                const label = document.createElement('div');
+                label.className = 'tl-bar-year';
+                label.textContent = String(y).slice(2);
+
+                col.appendChild(stack);
+                col.appendChild(label);
+                container.appendChild(col);
+            });
+        }
+        // ==================== END TIMELINE ====================
     </script>
 </body>
 </html>
